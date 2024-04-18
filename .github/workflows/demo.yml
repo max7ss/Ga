@@ -24,6 +24,9 @@ jobs:
         with:
           node-version: '14'
 
+      - name: Install dependencies
+        run: npm install
+    
       - name: Install prebuild tools
         run: |
           npm install -g node-gyp node-pre-gyp prebuild-install
@@ -40,6 +43,7 @@ jobs:
       - name: Install sqlite3 for Android ARM64
         run: |
           npm install sqlite3
+          pwd
           # 使用node-pre-gyp编译sqlite3，指定目标架构为arm64
           node-pre-gyp configure --target_arch=arm64
           node-pre-gyp build --target_arch=arm64
