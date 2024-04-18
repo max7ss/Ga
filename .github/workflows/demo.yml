@@ -42,7 +42,7 @@ jobs:
 
       - name: Install sqlite3 for Android ARM64
         run: |
-          npm install sqlite3
+          npm install sqlite3 --compile --verbose
           pwd
           # 使用node-pre-gyp编译sqlite3，指定目标架构为arm64
           node-pre-gyp configure --target_arch=arm64
