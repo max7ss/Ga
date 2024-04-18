@@ -39,18 +39,14 @@ jobs:
 
       - name: Install sqlite3 for Android ARM64
         run: |
-          npm install sqlite3 --compile --verbose
-          pwd
-          # 使用node-pre-gyp编译sqlite3，指定目标架构为arm64
-          node-pre-gyp configure --target_arch=arm64
-          node-pre-gyp build --target_arch=arm64
+          npm install sqlite3 --build-from-source --target_arch=arm64
 
       - name: Upload sqlite3 compiled files as artifact
         uses: actions/upload-artifact@v3
         with:
           name: sqlite3-artifact-arm64
           # 路径可能需要根据实际构建的文件调整
-          path: build/Release/sqlite3.node
+          path: build/Release/*.node
           if-no-files-found: error
      
 
