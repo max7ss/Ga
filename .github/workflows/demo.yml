@@ -37,16 +37,6 @@ jobs:
           echo "LD_LIBRARY_PATH=/usr/local/android-sdk/emulator/lib64:$LD_LIBRARY_PATH" >> $GITHUB_ENV
           echo "LD_LIBRARY_PATH=/usr/local/android-sdk/platform-tools:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
-       - name: Accept Android SDK licenses
-         run: |
-          echo y | sdkmanager --licenses
-
-       - name: Build Android project
-         run: |
-          # Add your Android project build commands here
-          # For example:
-          # ./gradlew assembleDebug
-
        - name: Install sqlite3 for Android
          run: |
           npm install prebuild-install
