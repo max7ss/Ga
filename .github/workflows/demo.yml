@@ -10,6 +10,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ["android-arm", "android-arm64", "android-x64"]
 
     steps:
       - uses: actions/checkout@v3
@@ -41,7 +46,7 @@ jobs:
           name: sqlite3-artifact
           # 我们需要找到编译后的sqlite3文件。这通常位于node_modules/sqlite3/build/Release/
           # 请注意，这取决于你的node版本和sqlite3的版本，路径可能有所不同
-          path: node_modules/sqlite3/*.*
+          path: node_modules/sqlite3/build/Release/*.node
           if-no-files-found: error
 
       - name: Run a multi-line script
