@@ -33,21 +33,24 @@ jobs:
           echo "LD_LIBRARY_PATH=/usr/local/android-sdk/emulator/lib64:$LD_LIBRARY_PATH" >> $GITHUB_ENV
           echo "LD_LIBRARY_PATH=/usr/local/android-sdk/platform-tools:$LD_LIBRARY_PATH" >> $GITHUB_ENV
 
-      - name: Install sqlite3 for Android
-        run: |
-          # 由于我们是在Linux环境下运行，所以不需要指定--prefix
-          npm install prebuild-install
-          npm install node-pre-gyp
-          npm install sqlite3 --compile --verbose
+      - name: sqlite3
+        run: npm install sqlite3
 
-      - name: Upload sqlite3 compiled files as artifact
+      - name: Build sqlite3 for Android arm64
+        run: |
+         npm install -g node-gyp
+         node-gyp configure || echo "Configuration failed, trying again..."
+         node-gyp build || echo "Build failed, trying again..."
+         mkdir -p package/prebuilds/${{ matrix.target }}
+         cp build/sqlite3.node package/prebuilds/${{ matrix.target }}/sqlite3-android-arm64.node
+
+      - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: sqlite3-artifact
-          # 我们需要找到编译后的sqlite3文件。这通常位于node_modules/sqlite3/build/Release/
-          # 请注意，这取决于你的node版本和sqlite3的版本，路径可能有所不同
-          path: node_modules/sqlite3/build/Release/*.node
-          if-no-files-found: error
+          name: sqlite3-android-arm64
+          path: package/prebuilds/sqlite3-android-arm64.node
+
+     
 
       - name: Run a multi-line script
         run: |
